@@ -55,7 +55,7 @@ namespace Computer_Science_end_project
             }
             else
             {
-                ThePlayer.
+                
             }
 
 
