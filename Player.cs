@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +25,7 @@ namespace Computer_Science_end_project
         private double timetowait;
         public double Timewaited;
         public bool CanMoveRoom;
-        private bool entered_Combat_Room =false;
+        private bool entered_Combat_Room = false;
 
 
 
@@ -39,12 +39,10 @@ namespace Computer_Science_end_project
         public bool Entered_Combat_Room { get => entered_Combat_Room; set => entered_Combat_Room = value; }
 
         public Player()
-        {
-            WindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            WindowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        {            
             lives = 3;
             Direction = direction.None;
-            _Location = new Vector2(WindowWidth / 3, WindowHeight / 2);
+            _Location = new Vector2(WindowWidthdiv3, WindowHeightdiv2);
             Positioninmaze = new Vector2(1, 3);
             _MovementSpeed = 5;
             Health = 10;
@@ -137,24 +135,25 @@ namespace Computer_Science_end_project
                     _Location = _Location + Movement;
 
 
-                    if (Math.Abs(WindowWidth / 3 - _Location.X) < 150 && Math.Abs(0 - _Location.Y) < 30)
+                    
+                    if (Math.Abs(WindowWidthdiv3 - _Location.X) < 150 && Math.Abs(0 - _Location.Y) < 30)
                     {
                         MoveroomAnimation();
                     }
 
-                    if (Math.Abs(WindowWidth / 3 - _Location.X) < 100 && Math.Abs(WindowHeight - _Location.Y) < 10)
-                    {
-
-                        MoveroomAnimation();
-                    }
-
-                    if (Math.Abs(0 - _Location.X) < 30 && Math.Abs(WindowHeight / 2 - _Location.Y) < 150)
+                    if (Math.Abs(WindowWidthdiv3 - _Location.X) < 100 && Math.Abs(WindowHeight - _Location.Y) < 10)
                     {
 
                         MoveroomAnimation();
                     }
 
-                    if (Math.Abs(2 * WindowWidth / 3 - _Location.X) < 30 && Math.Abs(WindowHeight / 2 - _Location.Y) < 150)
+                    if (Math.Abs(0 - _Location.X) < 30 && Math.Abs(WindowHeightdiv2 - _Location.Y) < 150)
+                    {
+
+                        MoveroomAnimation();
+                    }
+
+                    if (Math.Abs(2 * WindowWidthdiv3 - _Location.X) < 30 && Math.Abs(WindowHeightdiv2 - _Location.Y) < 150)
                     {
 
                         MoveroomAnimation();
@@ -189,7 +188,7 @@ namespace Computer_Science_end_project
                 case direction.North:
                     Movement.Y = _MovementSpeed * (Movement.Y - 1);
                     _Location = _Location + Movement;
-                    if (Math.Abs(WindowWidth / 3 - _Location.X) < 150 && Math.Abs(0 - _Location.Y) < 10)
+                    if (Math.Abs(WindowWidthdiv3 - _Location.X) < 150 && Math.Abs(0 - _Location.Y) < 10)
                     {
                         Roomchange.Y = WindowHeight;
                         _Location = _Location + Roomchange;
@@ -200,10 +199,10 @@ namespace Computer_Science_end_project
                 case direction.West:
                     Movement.X = _MovementSpeed * (Movement.X - 1);
                     _Location = _Location + Movement;
-                    if (Math.Abs(0 - _Location.X) < 10 && Math.Abs(WindowHeight / 2 - _Location.Y) < 100)
+                    if (Math.Abs(0 - _Location.X) < 10 && Math.Abs(WindowHeightdiv2 - _Location.Y) < 100)
                     {
                         Positioninmaze.X = Positioninmaze.X - 1;
-                        Roomchange.X = 2*WindowWidth/3 ;
+                        Roomchange.X = 2* WindowWidthdiv3;
                         _Location = _Location + Roomchange;
                     }
                     Movingroom = true;
@@ -211,7 +210,7 @@ namespace Computer_Science_end_project
                 case direction.South:
                     Movement.Y = _MovementSpeed * (Movement.Y + 1);
                     _Location = _Location + Movement;
-                    if (Math.Abs(WindowWidth / 3 - _Location.X) < 150 && Math.Abs(WindowHeight - _Location.Y) < 100)
+                    if (Math.Abs(WindowWidthdiv3 - _Location.X) < 150 && Math.Abs(WindowHeight - _Location.Y) < 100)
                     {
                         Positioninmaze.Y = Positioninmaze.Y + 1;
                         Roomchange.Y = -WindowHeight;
@@ -222,10 +221,10 @@ namespace Computer_Science_end_project
                 case direction.East:
                     Movement.X = _MovementSpeed * (Movement.X + 1);
                     _Location = _Location + Movement;
-                    if (Math.Abs(2*WindowWidth/3 - _Location.X) < 10 && Math.Abs(WindowHeight / 2 - _Location.Y) < 100)
+                    if (Math.Abs(2* WindowWidthdiv3 - _Location.X) < 10 && Math.Abs(WindowHeightdiv2 - _Location.Y) < 100)
                     {
                         Positioninmaze.X = Positioninmaze.X + 1;
-                        Roomchange.X = -2*WindowWidth/3;
+                        Roomchange.X = -2* WindowWidthdiv3;
                         _Location = _Location + Roomchange;
                     }
                     Movingroom = true;
@@ -235,12 +234,11 @@ namespace Computer_Science_end_project
             Movement.Y = 0;
             Roomchange.X = 0;
             Roomchange.Y = 0;
-
-            if ((Math.Abs(WindowWidth / 3 - _Location.X) < WindowWidth / 5 && Math.Abs(0 - _Location.Y) < WindowHeight / 10) || (Math.Abs(0 - _Location.X) < WindowWidth / 10 && Math.Abs(WindowHeight / 2 - _Location.Y) < WindowHeight / 7) || (Math.Abs(WindowWidth / 3 - _Location.X) < WindowWidth / 6 && Math.Abs(WindowHeight - _Location.Y) < WindowHeight / 10) || (Math.Abs(WindowWidth/1.5 - _Location.X) < WindowWidth / 6 && Math.Abs(WindowHeight / 2 - _Location.Y) < WindowHeight / 5))
+            
+            if ((Math.Abs(WindowWidthdiv3 - _Location.X) < WindowWidth / 5 && Math.Abs(0 - _Location.Y) < WindowHeight / 10) || (Math.Abs(0 - _Location.X) < WindowWidth / 10 && Math.Abs(WindowHeightdiv2 - _Location.Y) < WindowHeight / 7) || (Math.Abs(WindowWidthdiv3 - _Location.X) < WindowWidth / 6 && Math.Abs(WindowHeight - _Location.Y) < WindowHeight / 10) || (Math.Abs(WindowWidth / 1.5 - _Location.X) < WindowWidth / 6 && Math.Abs(WindowHeightdiv2 - _Location.Y) < WindowHeight / 5))
             {
                 MovedRoom = true;
-                Movingroom = false;
-                
+                Movingroom = false;                
             }
         }
 
@@ -252,7 +250,7 @@ namespace Computer_Science_end_project
                 if (_HitBox.Intersects(enemy._HitBox))
                 {
                     lives = lives - 1;
-                    _Location = new Vector2(WindowWidth / 3, WindowHeight / 2);
+                    _Location = new Vector2(WindowWidthdiv3, WindowHeight / 2);
                     remove = true;
                 }
             }
