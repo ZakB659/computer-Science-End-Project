@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Computer_Science_end_project
 {
@@ -135,26 +133,26 @@ namespace Computer_Science_end_project
 
             if (newFloor == true)
             {
-                ThebackgroundInGame.Texture = Textures[0]; //ThebackgroundInGame.TextureChecking(mazeforfloor, thePlayer)
-                mazeforfloor.generatemaze(floor);                
                 newFloor = false;
-                TheRoom.GenerateBorders(mazeforfloor, thePlayer,CombatRoomTimer);
+                ThebackgroundInGame.Texture = Textures[0]; //ThebackgroundInGame.TextureChecking(mazeforfloor, thePlayer)
+                mazeforfloor.generatemaze(floor);
+                TheRoom.GenerateBorders(mazeforfloor, thePlayer);
                 floor++;
                 roomState = RoomState.Empty;
                 IsDone = false;
             }
 
-            
+
             if (gameState == GameState.Game)
             {
-                if (thePlayer.Movingroom == true) //changing the texture of background acording to the rooms surrounding it
+                if (thePlayer.Movingroom == true) //changing the texture of background according to the rooms surrounding it
                 {
                     ThebackgroundInGame.Texture = Textures[0]; //ThebackgroundInGame.TextureChecking(mazeforfloor, thePlayer)
                 }
 
-                if (thePlayer.MovedRoom1 ==true)
+                if (thePlayer.MovedRoom1 == true)
                 {
-                    TheRoom.GenerateBorders(mazeforfloor, thePlayer,CombatRoomTimer);
+                    TheRoom.GenerateBorders(mazeforfloor, thePlayer);
                     thePlayer.MovedRoom1 = false;
                     Theenemies.RemoveEnemies();
                     mazeforfloor.RoomStateChecking(ref roomState, mazeforfloor, thePlayer);
@@ -172,15 +170,20 @@ namespace Computer_Science_end_project
                         TheRoom._Borders.Add(new Rectangle(windowWidth / 12, windowHeight / 10, windowWidth / 2, windowHeight * 4 / 5));
                         IsDone = true;
                     }
-                    
                     CombatRoomTimer.update(gameTime);
                     if (CombatRoomTimer.Spawning)//checking if past the buffer phase for the room 
                     {
                         EnemiesUpdating(gameTime); //an update method called for just enemies to make code less scrambled called when in a combat room    
                     }
 
+                    if (Theenemies._Enemies.Count == 0 && CombatRoomTimer.Checkenemies)
+                    {
+                        roomState = RoomState.Empty;
+                        mazeforfloor._Mazegenerated[(int)thePlayer._Positioninmaze.X, (int)thePlayer._Positioninmaze.Y] = 0;
+                        TheRoom.GenerateBorders(mazeforfloor, thePlayer);
+                    }
                 }
-            }           
+            }
 
             base.Update(gameTime);
         }
@@ -198,7 +201,10 @@ namespace Computer_Science_end_project
 
         public void EnemiesUpdating(GameTime gameTime)
         {
-            Theenemies.addenemy(floor, Content, gameTime);
+            if (!CombatRoomTimer.Checkenemies)
+            {
+                Theenemies.addenemy(floor, Content, gameTime);
+            }
 
             foreach (Enemy enemy in Theenemies._Enemies)
             {
@@ -212,7 +218,7 @@ namespace Computer_Science_end_project
             thePlayer.Update(gameTime, TheProjectiles, Content, thePlayer, TheRoom);
             thePlayer.collisions(Theenemies);
 
-            if(thePlayer.lives == 0)
+            if (thePlayer.lives == 0)
             {
                 gameState = GameState.Gameover;
             }
@@ -229,7 +235,7 @@ namespace Computer_Science_end_project
             spriteBatch.Begin();
 
             // TODO: Add your drawing code here
-            
+
             if (gameState == GameState.Menu)
             {
                 BackgroundInTitle.Draw(spriteBatch);
@@ -240,10 +246,10 @@ namespace Computer_Science_end_project
             {
                 if (gameState == GameState.Game)
                 {
-                   
+
                     ThebackgroundInGame.Draw(spriteBatch);
 
-                    mazeforfloor.draw(spriteBatch,thePlayer);
+                    mazeforfloor.draw(spriteBatch, thePlayer);
                     foreach (Projectile projectile in TheProjectiles._Projectiles)
                     {
                         projectile.Draw(spriteBatch);
@@ -265,10 +271,10 @@ namespace Computer_Science_end_project
                 }
             }
 
-            spriteBatch.DrawString(GameFont,"Lives: "+thePlayer.lives, new Vector2(1300, 800), Color.Red);
+            spriteBatch.DrawString(GameFont, "Lives: " + thePlayer.lives, new Vector2(1300, 800), Color.Red);
             spriteBatch.DrawString(GameFont, "X " + thePlayer._Location.X + " Y " + thePlayer._Location.Y, new Vector2(1300, 900), Color.Red);
             spriteBatch.DrawString(GameFont, "X " + TheCursor._Location.X + " Y " + TheCursor._Location.Y, new Vector2(1300, 700), Color.Red);
-
+            spriteBatch.DrawString(GameFont, "Lives: " + CombatRoomTimer.TimeinRoom, new Vector2(1300, 750), Color.Red);
             spriteBatch.End();
         }
     }
