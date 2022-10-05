@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +12,26 @@ namespace Computer_Science_end_project
 {
     class Timer:Charachter
     {
-        public float TimetoSurvive;
-        public int buffertime = 10;
-        public int TimeInRoom;
-        public int deadbuffer=0;
-        private bool spawning = false;
-        private bool roomfinished = true;
+        private float TimetoSurvive;
+        private int buffertime = 500;
+        private int deadbuffer=0;
+        private int timeinRoom;
+        private bool spawning = false;       
+        private bool checkenemies = false;
+        
 
         public bool Spawning { get => spawning; set => spawning = value; }
-        public bool Roomfinished { get => roomfinished; set => roomfinished = value; }
+        public int Deadbuffer { get => deadbuffer; set => deadbuffer = value; }        
+        public bool Checkenemies { get => checkenemies; set => checkenemies = value; }
+        public int TimeinRoom { get => timeinRoom; set => timeinRoom = value; }
 
         public Timer(int floor)
         {
             WindowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             WindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _Location = new Vector2(WindowWidth * 2 / 3, WindowHeight / 3);
-
-            TimetoSurvive = 20 + floor * 10;
+            TimetoSurvive = 2000 + floor * 100;
+            TimeinRoom = 0;
         }
 
         public void LoadContent(ContentManager Content)
@@ -38,24 +41,42 @@ namespace Computer_Science_end_project
 
         public void update(GameTime gameTime)
         {
-            TimeInRoom++;
-            if(TimeInRoom > buffertime && deadbuffer == 0)
+            TimeinRoom++;
+            if(TimeinRoom >= buffertime && Deadbuffer == 0)
             {
-                Spawning = true;
+                if(TimetoSurvive > TimeinRoom)
+                {
+                    Spawning = true;
+                }
+                else
+                {
+                    Spawning = false;
+                    checkenemies = true;
+                }
+            }
+            else
+            {
+                if (deadbuffer != 0)
+                {
+                    deadbuffer--;
+                }
             }
 
         }
 
         public void resettimer()
         {
-            TimeInRoom = 0;
-            buffertime = 10;
+            TimeinRoom = 0;
+            buffertime = 500;
+            spawning = false;
+            checkenemies = false;
         }
 
         public void PlayerLifeLost()
         {
-            TimeInRoom = TimeInRoom - 15;
-            deadbuffer = 5;
+            Deadbuffer = 100;
         }
+
+
     }
 }
