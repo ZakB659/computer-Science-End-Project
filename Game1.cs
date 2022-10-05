@@ -171,17 +171,18 @@ namespace Computer_Science_end_project
                         IsDone = true;
                     }
                     CombatRoomTimer.update(gameTime);
-                    if (CombatRoomTimer.Spawning)//checking if past the buffer phase for the room 
-                    {
-                        EnemiesUpdating(gameTime); //an update method called for just enemies to make code less scrambled called when in a combat room    
-                    }
+                   //checking if past the buffer phase for the room 
+                    
+                   EnemiesUpdating(gameTime); //an update method called for just enemies to make code less scrambled called when in a combat room    
+                    
 
-                    if (Theenemies._Enemies.Count == 0 && CombatRoomTimer.Checkenemies)
-                    {
-                        roomState = RoomState.Empty;
-                        mazeforfloor._Mazegenerated[(int)thePlayer._Positioninmaze.X, (int)thePlayer._Positioninmaze.Y] = 0;
-                        TheRoom.GenerateBorders(mazeforfloor, thePlayer);
-                    }
+                   if (!Theenemies._Enemies.Any() && CombatRoomTimer.Checkenemies)
+                   {
+                       roomState = RoomState.Empty;
+                       mazeforfloor._Mazegenerated[(int)thePlayer._Positioninmaze.X, (int)thePlayer._Positioninmaze.Y] = 0;
+                       TheRoom.GenerateBorders(mazeforfloor, thePlayer);
+                        CombatRoomTimer.resettimer();
+                   }
                 }
             }
 
@@ -201,7 +202,7 @@ namespace Computer_Science_end_project
 
         public void EnemiesUpdating(GameTime gameTime)
         {
-            if (!CombatRoomTimer.Checkenemies)
+            if (CombatRoomTimer.Spawning)
             {
                 Theenemies.addenemy(floor, Content, gameTime);
             }
@@ -216,7 +217,7 @@ namespace Computer_Science_end_project
         public void PlayerUpdating(GameTime gameTime)
         {
             thePlayer.Update(gameTime, TheProjectiles, Content, thePlayer, TheRoom);
-            thePlayer.collisions(Theenemies);
+            thePlayer.collisions(Theenemies,CombatRoomTimer);
 
             if (thePlayer.lives == 0)
             {
@@ -279,3 +280,4 @@ namespace Computer_Science_end_project
         }
     }
 }
+
