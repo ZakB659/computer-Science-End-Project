@@ -242,7 +242,7 @@ namespace Computer_Science_end_project
             }
         }
 
-        public void collisions(Enemies enemies)
+        public void collisions(Enemies enemies,Timer timer)
         {
             bool remove = false;
             foreach (Enemy enemy in enemies._Enemies)
@@ -251,6 +251,7 @@ namespace Computer_Science_end_project
                 {
                     lives = lives - 1;
                     _Location = new Vector2(WindowWidthdiv3, WindowHeight / 2);
+                    timer.PlayerLifeLost();
                     remove = true;
                 }
             }
