@@ -8,73 +8,65 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
+
 namespace Computer_Science_end_project
 {
-    class Timer:Charachter
+    class Room
     {
-        private float TimetoSurvive;
-        private int buffertime = 500;
-        private int deadbuffer=0;
-        private int timeinRoom = 1;
-        private bool spawning = false;
-        private bool roomfinished = true;
-        private bool checkenemies = false;
         
+        private List<Rectangle> Border = new List<Rectangle>();
+        private int windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        private int windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; 
+        
+        public List<Rectangle> _Borders { get => Border; set => Border = value; }
 
-        public bool Spawning { get => spawning; set => spawning = value; }
-        public bool Roomfinished { get => roomfinished; set => roomfinished = value; }
-        public int Deadbuffer { get => deadbuffer; set => deadbuffer = value; }
-        public int TimeinRoom { get => TimeinRoom; set => TimeinRoom = value; }
-        public bool Checkenemies { get => checkenemies; set => checkenemies = value; }
+        public Room()
+        {            
 
-        public Timer(int floor)
-        {
-            WindowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            WindowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _Location = new Vector2(WindowWidth * 2 / 3, WindowHeight / 3);
-            TimetoSurvive = 200 + floor * 100;
-           
-        }
-
-        public void LoadContent(ContentManager Content)
-        {
 
         }
 
-        public void update(GameTime gameTime)
+        public void GenerateBorders(Maze floormaze, Player ThePlayer)
         {
-            timeinRoom++;
-            if(timeinRoom >= buffertime && Deadbuffer == 0)
+            _Borders.Clear();
+            _Borders.Add(new Rectangle(windowWidth / 12, windowHeight / 10, windowWidth / 2, windowHeight * 4 / 5));
+
+            if (floormaze._Mazegenerated[(int)ThePlayer._Positioninmaze.X, (int)ThePlayer._Positioninmaze.Y] == 2)
             {
-                if(TimetoSurvive > timeinRoom)
-                {
-                    Spawning = true;
-                }
-                else
-                {
-                    Spawning = false;
-                    
-                }
+                _Borders.Add(new Rectangle(windowWidth / 4, 0, windowWidth / 6, windowHeight / 10));
+                _Borders.Add(new Rectangle(windowWidth * 7 / 12, windowHeight * 2 / 5, windowWidth / 12, windowHeight / 5));
+                _Borders.Add(new Rectangle(windowWidth / 4, windowHeight * 9 / 10, windowWidth / 6, windowHeight / 10));
+                _Borders.Add(new Rectangle(0, windowHeight * 2 / 5, windowWidth / 12, windowHeight / 5));
+                ThePlayer.Entered_Combat_Room = false;
             }
             else
             {
-                Deadbuffer--;
+                if (floormaze._Mazegenerated[(int)ThePlayer._Positioninmaze.X, (int)ThePlayer._Positioninmaze.Y - 1] != 1)
+                {
+                    _Borders.Add(new Rectangle(windowWidth / 4, 0, windowWidth / 6, windowHeight / 10));
+                }
+
+                if (floormaze._Mazegenerated[(int)ThePlayer._Positioninmaze.X + 1, (int)ThePlayer._Positioninmaze.Y] != 1)
+                {
+                    _Borders.Add(new Rectangle(windowWidth * 7 / 12, windowHeight * 2 / 5, windowWidth / 12, windowHeight / 5));
+                }
+
+                if (floormaze._Mazegenerated[(int)ThePlayer._Positioninmaze.X, (int)ThePlayer._Positioninmaze.Y + 1] != 1)
+                {
+                    _Borders.Add(new Rectangle(windowWidth / 4, windowHeight * 9 / 10, windowWidth / 6, windowHeight / 10));
+                }
+
+                if (floormaze._Mazegenerated[(int)ThePlayer._Positioninmaze.X - 1, (int)ThePlayer._Positioninmaze.Y] != 1)
+                {
+                    _Borders.Add(new Rectangle(0, windowHeight * 2 / 5, windowWidth / 12, windowHeight / 5));
+                }
             }
 
+
+
+
         }
 
-        public void resettimer()
-        {
-            timeinRoom = 0;
-            buffertime = 500;
-        }
-
-        public void PlayerLifeLost()
-        {
-            Deadbuffer = 100;
-        }
-
-
+      
     }
 }
-
