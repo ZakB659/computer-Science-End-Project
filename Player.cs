@@ -15,10 +15,13 @@ namespace Computer_Science_end_project
     {
         private Vector2 Movement;
         private Vector2 Roomchange;
+        private Vector2 projectile_Movement;
         private Vector2 Positioninmaze;
+        private Vector2 ResetVector = new Vector2(0,0);
         private direction Direction;
         private bool movingroom;
         private bool MovedRoom;
+        private bool canshoot;
         public int lives;
         public int movinganimationX;
         private int shootingspeed;
@@ -26,7 +29,7 @@ namespace Computer_Science_end_project
         public double Timewaited;
         public bool CanMoveRoom;
         private bool entered_Combat_Room = false;
-
+        
 
 
         public Vector2 _Movement { get => Movement; set => Movement = value; }
@@ -37,6 +40,7 @@ namespace Computer_Science_end_project
         public bool Movingroom { get => movingroom; set => movingroom = value; }
         public bool MovedRoom1 { get => MovedRoom; set => MovedRoom = value; }
         public bool Entered_Combat_Room { get => entered_Combat_Room; set => entered_Combat_Room = value; }
+        public Vector2 Projectile_Movement { get => projectile_Movement; set => projectile_Movement = value; } 
 
         public Player()
         {            
@@ -76,8 +80,9 @@ namespace Computer_Science_end_project
 
             if (CanMoveRoom == true)
             {
-                Movement.X = 0;
-                Movement.Y = 0;
+                Movement = ResetVector;
+                Projectile_Movement = ResetVector;
+                
                 if (Movingroom == true)
                 {
                     MoveroomAnimation();
@@ -104,28 +109,53 @@ namespace Computer_Science_end_project
                     }
                     if (ks.IsKeyDown(Keys.S))
                     {
-                        _Direction = direction.South;
                         Movement.Y = _MovementSpeed * (Movement.Y + 1);
+                        _Direction = direction.South;
                         movinganimationX = 0;
                     }
 
 
-                    if (ks.IsKeyDown(Keys.D) && ks.IsKeyDown(Keys.A)) { Movement.X = 0; movinganimationX = 0; _Direction = direction.None; }
-                    if (ks.IsKeyDown(Keys.W) && ks.IsKeyDown(Keys.S)) { Movement.Y = 0; movinganimationX = 0; _Direction = direction.None; }
+                    if (ks.IsKeyDown(Keys.D) && ks.IsKeyDown(Keys.A)) { Movement.X = 0; movinganimationX = 0; }
+                    if (ks.IsKeyDown(Keys.W) && ks.IsKeyDown(Keys.S)) { Movement.Y = 0; movinganimationX = 0; }
 
-                    if (ks.IsKeyDown(Keys.Space))
+                    if (ks.IsKeyDown(Keys.Up))
+                    {
+                        projectile_Movement.Y = _MovementSpeed * (Projectile_Movement.Y - 1);       
+                        movinganimationX = 3;
+                    }
+                    if (ks.IsKeyDown(Keys.Down))
+                    {                        
+                        projectile_Movement.Y = _MovementSpeed * (Projectile_Movement.Y + 1);
+                        movinganimationX = 0;
+                    }
+                    if (ks.IsKeyDown(Keys.Left))
+                    {
+                        projectile_Movement.X = _MovementSpeed * (Projectile_Movement.X - 1);                        
+                        movinganimationX = 1;
+                    }
+                    if (ks.IsKeyDown(Keys.Right))
+                    {
+                        projectile_Movement.X = _MovementSpeed * (Projectile_Movement.X + 1);                       
+                        movinganimationX = 2;
+                    }
+                    canshoot = true;
+
+                    if (ks.IsKeyDown(Keys.Up) && ks.IsKeyDown(Keys.Down)) { canshoot = false; }
+                    if (ks.IsKeyDown(Keys.Left) && ks.IsKeyDown(Keys.Right)) { canshoot = false; }
+
+                    if (ks.IsKeyDown(Keys.Space) && canshoot == true)
                     {
                         Timewaited++;
 
                         if (Timewaited > Timetowait / shootingspeed)
                         {
                             bool stationary = false;
-                            if (Movement == new Vector2(0, 0))
+                            if (Projectile_Movement == new Vector2(0, 0))
                             {
                                 stationary = true;
                             }
 
-                            projectiles.addprojectiles(content, Theplayer, _Movement, stationary);
+                            projectiles.addprojectiles(content, Theplayer, Projectile_Movement, stationary);
 
                             Timewaited = 0;
                         }
