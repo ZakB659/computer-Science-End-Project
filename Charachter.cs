@@ -19,9 +19,7 @@ namespace Computer_Science_end_project
         South,
         West,
 
-    }
-
-   
+    }  
 
 
     class Charachter
