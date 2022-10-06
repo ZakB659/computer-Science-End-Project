@@ -61,9 +61,12 @@ namespace Computer_Science_end_project
                     _Borders.Add(new Rectangle(0, windowHeight * 2 / 5, windowWidth / 12, windowHeight / 5));
                 }
             }
+
+
+
+
         }
 
       
     }
 }
-
