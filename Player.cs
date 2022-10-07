@@ -21,7 +21,7 @@ namespace Computer_Science_end_project
         private direction Direction;
         private bool movingroom;
         private bool MovedRoom;
-        private bool canshoot;
+        private bool canshoot;      
         public int lives;
         public int movinganimationX;
         private int shootingspeed;
@@ -40,7 +40,8 @@ namespace Computer_Science_end_project
         public bool Movingroom { get => movingroom; set => movingroom = value; }
         public bool MovedRoom1 { get => MovedRoom; set => MovedRoom = value; }
         public bool Entered_Combat_Room { get => entered_Combat_Room; set => entered_Combat_Room = value; }
-        public Vector2 Projectile_Movement { get => projectile_Movement; set => projectile_Movement = value; } 
+        public Vector2 Projectile_Movement { get => projectile_Movement; set => projectile_Movement = value; }
+        public bool Canshoot { get => canshoot; set => canshoot = value; }
 
         public Player()
         {            
@@ -118,32 +119,32 @@ namespace Computer_Science_end_project
                     if (ks.IsKeyDown(Keys.D) && ks.IsKeyDown(Keys.A)) { Movement.X = 0; movinganimationX = 0; }
                     if (ks.IsKeyDown(Keys.W) && ks.IsKeyDown(Keys.S)) { Movement.Y = 0; movinganimationX = 0; }
 
-                    if (ks.IsKeyDown(Keys.Up))
+                    if (ks.IsKeyDown(Keys.I))
                     {
                         projectile_Movement.Y = _MovementSpeed * (Projectile_Movement.Y - 1);       
                         movinganimationX = 3;
                     }
-                    if (ks.IsKeyDown(Keys.Down))
+                    if (ks.IsKeyDown(Keys.K))
                     {                        
                         projectile_Movement.Y = _MovementSpeed * (Projectile_Movement.Y + 1);
                         movinganimationX = 0;
                     }
-                    if (ks.IsKeyDown(Keys.Left))
+                    if (ks.IsKeyDown(Keys.J))
                     {
-                        projectile_Movement.X = _MovementSpeed * (Projectile_Movement.X - 1);                        
+                        projectile_Movement.X = _MovementSpeed * (Projectile_Movement.X - 1);
                         movinganimationX = 1;
                     }
-                    if (ks.IsKeyDown(Keys.Right))
+                    if (ks.IsKeyDown(Keys.L))
                     {
                         projectile_Movement.X = _MovementSpeed * (Projectile_Movement.X + 1);                       
                         movinganimationX = 2;
                     }
-                    canshoot = true;
+                    Canshoot = true;
 
-                    if (ks.IsKeyDown(Keys.Up) && ks.IsKeyDown(Keys.Down)) { canshoot = false; }
-                    if (ks.IsKeyDown(Keys.Left) && ks.IsKeyDown(Keys.Right)) { canshoot = false; }
+                    if (ks.IsKeyDown(Keys.I) && ks.IsKeyDown(Keys.K)) { Canshoot = false; }
+                    if (ks.IsKeyDown(Keys.J) && ks.IsKeyDown(Keys.L)) { Canshoot = false; }
 
-                    if (ks.IsKeyDown(Keys.Space) && canshoot == true)
+                    if (ks.IsKeyDown(Keys.Space) && Canshoot == true)
                     {
                         Timewaited++;
 
@@ -161,9 +162,7 @@ namespace Computer_Science_end_project
                         }
                     }
 
-
                     _Location = _Location + Movement;
-
 
                     
                     if (Math.Abs(WindowWidthdiv3 - _Location.X) < 150 && Math.Abs(0 - _Location.Y) < 30)
@@ -260,10 +259,8 @@ namespace Computer_Science_end_project
                     Movingroom = true;
                     break;
             }
-            Movement.X = 0;
-            Movement.Y = 0;
-            Roomchange.X = 0;
-            Roomchange.Y = 0;
+            Movement = ResetVector;
+            Roomchange = ResetVector;
             
             if ((Math.Abs(WindowWidthdiv3 - _Location.X) < WindowWidth / 5 && Math.Abs(0 - _Location.Y) < WindowHeight / 10) || (Math.Abs(0 - _Location.X) < WindowWidth / 10 && Math.Abs(WindowHeightdiv2 - _Location.Y) < WindowHeight / 7) || (Math.Abs(WindowWidthdiv3 - _Location.X) < WindowWidth / 6 && Math.Abs(WindowHeight - _Location.Y) < WindowHeight / 10) || (Math.Abs(WindowWidth / 1.5 - _Location.X) < WindowWidth / 6 && Math.Abs(WindowHeightdiv2 - _Location.Y) < WindowHeight / 5))
             {
