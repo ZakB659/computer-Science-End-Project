@@ -23,7 +23,6 @@ namespace Computer_Science_end_project
         public Room()
         {            
 
-
         }
 
         public void GenerateBorders(Maze floormaze, Player ThePlayer)
