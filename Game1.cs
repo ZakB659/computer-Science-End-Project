@@ -275,7 +275,22 @@ namespace Computer_Science_end_project
             spriteBatch.DrawString(GameFont, "Lives: " + thePlayer.lives, new Vector2(1300, 800), Color.Red);
             spriteBatch.DrawString(GameFont, "X " + thePlayer._Location.X + " Y " + thePlayer._Location.Y, new Vector2(1300, 900), Color.Red);
             spriteBatch.DrawString(GameFont, "X " + TheCursor._Location.X + " Y " + TheCursor._Location.Y, new Vector2(1300, 700), Color.Red);
-            spriteBatch.DrawString(GameFont, "Lives: " + CombatRoomTimer.TimeinRoom, new Vector2(1300, 750), Color.Red);
+
+            if (TheProjectiles._Projectiles.Any())
+            {
+                spriteBatch.DrawString(GameFont, "proj directions X:" + TheProjectiles._Projectiles[0].Movement.X + "Y: " + TheProjectiles._Projectiles[0].Movement.Y, new Vector2(1300, 750), Color.Red);
+                
+            }
+
+            if (thePlayer.Canshoot)
+            {
+                spriteBatch.DrawString(GameFont,"true", new Vector2(1300, 850), Color.Red);
+            }
+            else
+            {
+                spriteBatch.DrawString(GameFont, "false", new Vector2(1300, 850), Color.Red);
+            }
+
             spriteBatch.End();
         }
     }
